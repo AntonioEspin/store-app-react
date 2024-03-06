@@ -20,6 +20,14 @@
   -webkit-text-size-adjust: 100%;
 }
 
+#root {
+  max-width: 600px;
+  margin: 0 auto;
+  padding: 2rem;
+  text-align: center;
+  width: 100%;
+}
+
 body {
   margin: 0;
   display: flex;

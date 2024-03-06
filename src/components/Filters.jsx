@@ -1,24 +1,40 @@
-import { useState } from 'react'
+/* eslint-disable react/prop-types */
+import { useContext, useId } from 'react'
 import './Filters.css'
+import { FiltersContext } from '../context/filtersContext'
 
 export function Filters (){
-  const[minPrice, setMinPrice] = useState(0)
+
+  const {filters, setFilters} = useContext(FiltersContext)
+
+  const minPriceId = useId()
+  const categoryId = useId()
 
   const handleChangePrice = (e) => {
-    setMinPrice(e.target.value)
+    setFilters(prevState => ({
+      ...prevState,
+      minPrice: e.target.value
+    }))
+  }
+
+  const handleChangeCategory = (e) => {
+    setFilters(prevState => ({
+      ...prevState,
+      category: e.target.value
+    }))
   }
 
   return (
     <section className="filters">
       <div>
-        <label htmlFor="price">Precio</label>
-        <input type="range" name="price" id="price" min='0' max='1000' onChange={handleChangePrice} />
-        <span>${minPrice}</span>
+        <label htmlFor={minPriceId}>Precio</label>
+        <input type="range" name="price" id={minPriceId} min='0' max='1000' value={filters.minPrice} onChange={handleChangePrice} />
+        <span>${filters.minPrice}</span>
       </div>
 
       <div>
-        <label htmlFor="category">Categorias</label>
-        <select name="" id="category">
+        <label htmlFor={categoryId}>Categorias</label>
+        <select name="" id={categoryId} onChange={handleChangeCategory}>
           <option value="all">Todas</option>
           <option value="men's clothing">Ropa de Hombre</option>
           <option value="jewelery">Joyas</option>
