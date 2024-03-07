@@ -1,9 +1,33 @@
+/* eslint-disable react/prop-types */
 import { useId } from 'react'
+import { useCart } from '../hooks/useCart'
 import { CartIcon, ClearCartIcon } from './Icons'
 import './Cart.css'
 
+function CartItem ({image, title, description, price, quantity, addToCart}) {
+  return (
+    <li>
+      <img
+        src={image}
+        alt={description}
+      />
+      <div>
+        <strong>{title}</strong> - ${price}
+      </div>
+
+      <footer>
+        <small>
+          Qty: {quantity}
+        </small>
+        <button onClick={addToCart}>+</button>
+      </footer>
+    </li>
+  )
+}
+
 export function Cart () {
   const cartCheckboxId = useId()
+  const {cart, addToCart, clearCart} = useCart()
   return (
     <>
       <label className='cart-button' htmlFor={cartCheckboxId}>
@@ -13,24 +37,17 @@ export function Cart () {
 
       <aside className='cart'>
         <ul>
-          <li>
-            <img
-              src='https://fakestoreapi.com/img/61pHAEJ4NML._AC_UX679_.jpg'
-              alt=''
-            />
-            <div>
-              <strong>Celular</strong> - $1500
-            </div>
-
-            <footer>
-              <small>
-                Qty: 1
-              </small>
-              <button>+</button>
-            </footer>
-          </li>
+          {
+            cart.map(product => (
+              <CartItem
+                key={product.id}
+                addToCart={()=>addToCart(product)}
+                {...product}
+              />
+            ))
+          }
         </ul>
-        <button>
+        <button onClick={clearCart}>
           <ClearCartIcon/>
         </button>
       </aside>
